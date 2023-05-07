@@ -1,51 +1,64 @@
 #include <iostream>
-#include <map>
-#include <string>
 #include <vector>
-#include "empregado.h"
+#include <iomanip>
+
+#include "casa.h"
 
 using namespace std;
 
 int main() {
-    vector<Empregado> funcionarios;
-    string continuar= "y";
+    vector<Casa> casas;
+    string continuarCasa = "y";
+    string continuarDivisao = "y";
 
-    while (continuar== "y")
+    while (continuarCasa== "y") // casa
         {
-            Empregado depart;
-            cout<<endl;
-            cout << "Insira o nome do funcionario:" << endl;
-            cin >> depart.nome;
-            cout << "Insira o nome do departamento:" << endl;
-            cin >> depart.departamento;
-            cout << "Insira o salario do empregado:" << endl;
-            cin>> depart.salario;
-            cin.ignore();
+            Casa novaCasa;
 
-            funcionarios.push_back(depart);
-            cout << "Inserir outro empregado?(y/n)" << endl;
-            cin >> continuar;
+
+                while (continuarDivisao== "y") //Divisao
+                    {
+                        Divisao novaDiv;
+                        cout<<endl;
+                        cout<< "Divisao" << novaCasa.numDiv;
+                        cout << ":\n Insira largura:" << endl;
+                        cin >> novaDiv.larg;
+                        cout << "Insira ocomprimento:" << endl;
+                        cin >>novaDiv.comp;
+                        cin.ignore();
+
+                    novaCasa.adicionarDivisao(novaDiv);
+                    cout << "Prentende uma nova divisao ?(y/n)" << endl;
+                    cin >> continuarDivisao;
+                    }
+                continuarDivisao = "y";
+                casas.push_back(novaCasa);
+                    cout << "Prentende uma nova casa ?(y/n)" << endl;
+                    cin >> continuarCasa;
         }
+        double totalDiv = 0;
+        double mediaDiv =0;
+        double mediaDivTotal= 0;
+        double areaTotalQuarteirao =0;
+        for (int i =0; i< casas.size(); i++)
+        {
+            //cout << "total de casas"<< casas.size() <<endl;
 
-        map<string, vector<Empregado>> departamentoOrdenado;
+            // cout << "numero de divisoes: "<<casas[i].numDiv<<endl;
+            totalDiv += casas[i].numDiv; // divisoes totais
+
+           // cout << " media area da divisoes: "<< casas[i].media()<< endl;
+           mediaDiv += casas[i].media();
+           mediaDivTotal += mediaDiv/totalDiv;
+
+            //cout << "Area total da casa:  "<<casas[i].areaTotal()<<endl;
+            areaTotalQuarteirao += casas[i].areaTotal();
 
 
-      for (Empregado &emp : funcionarios)
-      {
-          departamentoOrdenado[emp.departamento].push_back(emp);
-
-      }
-      for (const pair<string, vector<Empregado>>&dep:departamentoOrdenado)
-      {
-          string departamento = dep.first;//inicio do array
-          int soma = 0;
-
-          for (Empregado &emp:departamentoOrdenado[departamento])
-          {
-              //cout << emp.departamento<< emp.salario<<endl;
-              soma += emp.salario;
-          }
-
-          cout << endl << departamento << " - " << soma << endl;
-      }
-}
+        }
+        cout<<" Relatorio do quarteirao"<< endl;
+        cout<< "Total de Casas: "<<casas.size()<<endl;
+        cout<< "Total de divisoes: "<<totalDiv<< endl;
+        cout<< "Area media das Divisoes: "<<setprecision(2)<<mediaDivTotal<<endl;
+        cout << "Area total do quarteirao:"<<areaTotalQuarteirao<<endl;
+    }
