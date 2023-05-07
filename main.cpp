@@ -1,48 +1,51 @@
 #include <iostream>
+#include <map>
 #include <string>
 #include <vector>
-#include <algorithm>
+#include "empregado.h"
 
 using namespace std;
 
-int main()
-{
-    string fristLine, secondLine;
+int main() {
+    vector<Empregado> funcionarios;
+    string continuar= "y";
 
-    cout <<"Frist string"<< endl;
-    getline(cin, fristLine);
-
-    vector<char>vectorFristString;
-    for(char letter : fristLine)
-    {
-        if (letter != 32)
-            {
-                vectorFristString.push_back(letter);
-            }
-    }
-    sort(vectorFristString.begin(), vectorFristString.end());
-
-    cout<< "Second String"<< endl;
-    getline(cin, secondLine);
-
-    vector<char> vectorSecondString;
-    for (char secondLetter : secondLine)
-    {
-        if (secondLetter != 32)
+    while (continuar== "y")
         {
-            vectorSecondString.push_back(secondLetter);
+            Empregado depart;
+            cout<<endl;
+            cout << "Insira o nome do funcionario:" << endl;
+            cin >> depart.nome;
+            cout << "Insira o nome do departamento:" << endl;
+            cin >> depart.departamento;
+            cout << "Insira o salario do empregado:" << endl;
+            cin>> depart.salario;
+            cin.ignore();
+
+            funcionarios.push_back(depart);
+            cout << "Inserir outro empregado?(y/n)" << endl;
+            cin >> continuar;
         }
-    }
-    sort(vectorSecondString.begin(), vectorSecondString.end());
 
-    bool anagrams = equal(vectorFristString.begin(), vectorFristString.end(), vectorSecondString.begin());
+        map<string, vector<Empregado>> departamentoOrdenado;
 
-    if (anagrams == false )
-    {
-        cout<<"NOT ANAGRAMS"<< endl;
-    }
-    else
-    {
-        cout<<"THEY ARE ANAGRAMS"<< endl;
-    }
+
+      for (Empregado &emp : funcionarios)
+      {
+          departamentoOrdenado[emp.departamento].push_back(emp);
+
+      }
+      for (const pair<string, vector<Empregado>>&dep:departamentoOrdenado)
+      {
+          string departamento = dep.first;//inicio do array
+          int soma = 0;
+
+          for (Empregado &emp:departamentoOrdenado[departamento])
+          {
+              //cout << emp.departamento<< emp.salario<<endl;
+              soma += emp.salario;
+          }
+
+          cout << endl << departamento << " - " << soma << endl;
+      }
 }
